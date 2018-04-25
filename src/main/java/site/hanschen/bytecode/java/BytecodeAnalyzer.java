@@ -10,6 +10,8 @@ import java.io.IOException;
  */
 public class BytecodeAnalyzer {
 
+    private String tag = "BytecodeAnalyzer";
+
     public static void main(String[] args) {
         Logger.d("analyze start...");
         try {

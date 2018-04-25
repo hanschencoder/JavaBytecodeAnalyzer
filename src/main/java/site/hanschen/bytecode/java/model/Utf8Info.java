@@ -18,10 +18,13 @@ public class Utf8Info extends ConstantElement {
      */
     public byte[] bytes;
 
+    public String value;
+
     public Utf8Info(short tag, int length, byte[] bytes) {
         super(tag);
         this.length = length;
         this.bytes = bytes;
+        this.value = new String(bytes);
     }
 
     public static class Parser extends ConstantElementParser<Utf8Info> {
@@ -43,6 +46,6 @@ public class Utf8Info extends ConstantElement {
 
     @Override
     public String toString() {
-        return "Utf8Info{" + "length=" + length + ", string=" + new String(bytes) + '}';
+        return "Utf8Info{" + "length=" + length + ", value=" + value + '}';
     }
 }

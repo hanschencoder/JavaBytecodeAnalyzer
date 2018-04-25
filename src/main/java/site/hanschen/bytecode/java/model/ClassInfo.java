@@ -33,4 +33,9 @@ public class ClassInfo extends ConstantElement {
             return new ClassInfo(tag, nameIndex);
         }
     }
+
+    @Override
+    public String toString() {
+        return "ClassInfo{" + "nameIndex=" + nameIndex + '}';
+    }
 }
