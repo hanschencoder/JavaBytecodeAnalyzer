@@ -5,16 +5,18 @@ import site.hanschen.bytecode.java.ClassFile;
 import java.nio.ByteBuffer;
 
 /**
+ * 表示对一个类中方法的符号引用
+ *
  * @author chenhang
  */
 public class MethodRefInfo extends ConstantElement {
 
     /**
-     * 2 byte
+     * 2 byte，指向 CONSTANT_Class_info，被引用方法所在的类
      */
     public int classIndex;
     /**
-     * 2 byte
+     * 2 byte，指向 CONSTANT_NameAndType_info，被引用方法的方法名称和方法签名
      */
     public int nameAndTypeIndex;
 

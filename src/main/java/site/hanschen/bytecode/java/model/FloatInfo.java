@@ -6,6 +6,8 @@ import sun.misc.FloatConsts;
 import java.nio.ByteBuffer;
 
 /**
+ * 存储的是源文件中出现的 float 型数据的值
+ *
  * @author chenhang
  */
 public class FloatInfo extends ConstantElement {

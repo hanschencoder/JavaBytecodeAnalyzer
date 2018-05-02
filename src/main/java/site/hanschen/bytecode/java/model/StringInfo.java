@@ -5,6 +5,8 @@ import site.hanschen.bytecode.java.ClassFile;
 import java.nio.ByteBuffer;
 
 /**
+ * 存储的是源文件中出现的 String 型数据的索引
+ *
  * @author chenhang
  */
 public class StringInfo extends ConstantElement {

@@ -5,6 +5,8 @@ import site.hanschen.bytecode.java.ClassFile;
 import java.nio.ByteBuffer;
 
 /**
+ * 存储的是源文件中出现的 int 型数据的值
+ *
  * @author chenhang
  */
 public class IntegerInfo extends ConstantElement {

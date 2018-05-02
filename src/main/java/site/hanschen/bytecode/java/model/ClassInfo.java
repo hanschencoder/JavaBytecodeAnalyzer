@@ -5,6 +5,8 @@ import site.hanschen.bytecode.java.ClassFile;
 import java.nio.ByteBuffer;
 
 /**
+ * 类信息的描述
+ *
  * @author chenhang
  */
 public class ClassInfo extends ConstantElement {

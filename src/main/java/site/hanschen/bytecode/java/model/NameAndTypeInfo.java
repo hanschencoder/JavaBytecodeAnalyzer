@@ -5,16 +5,18 @@ import site.hanschen.bytecode.java.ClassFile;
 import java.nio.ByteBuffer;
 
 /**
+ * 源文件中对一个字段或方法的符号引用的描述
+ *
  * @author chenhang
  */
 public class NameAndTypeInfo extends ConstantElement {
 
     /**
-     * 2 byte
+     * 2 byte， 被引用的方法或者字段名称
      */
     public int nameIndex;
     /**
-     * 2 byte
+     * 2 byte，被引用的方法的签名或字段类型
      */
     public int descriptionIndex;
 

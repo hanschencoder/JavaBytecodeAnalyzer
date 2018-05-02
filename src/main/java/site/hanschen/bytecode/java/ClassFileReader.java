@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import site.hanschen.bytecode.java.model.*;
 import site.hanschen.bytecode.java.utils.Logger;
 import site.hanschen.bytecode.java.utils.Utils;
+import sun.rmi.runtime.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +13,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,12 +63,12 @@ public class ClassFileReader {
         }
 
         // show version.
-        int minor = buffer.getShort();
-        int major = buffer.getShort();
+        int minor = buffer.getShort() & 0xffff;
+        int major = buffer.getShort() & 0xffff;
         Logger.d("bytecode version: %d.%d", major, minor);
 
         // constant_pool_count
-        int constantPoolCount = buffer.getShort();
+        int constantPoolCount = buffer.getShort() & 0xffff;
         Logger.d("constantPoolCount: %d", constantPoolCount);
 
         // attention, The constant_pool table is indexed from 1 to constant_pool_count-1
@@ -98,13 +98,13 @@ public class ClassFileReader {
         Logger.d("accessFlags: %d", accessFlags);
 
         // get class name
-        int thisClassIndex = buffer.getShort();
+        int thisClassIndex = buffer.getShort() & 0xffff;
         ClassInfo classInfo = (ClassInfo) constantPool[thisClassIndex];
         Utf8Info classname = (Utf8Info) constantPool[classInfo.nameIndex];
         Logger.d("this class name: %s", classname.value);
 
         // parse super class name
-        int superClass = buffer.getShort();
+        int superClass = buffer.getShort() & 0xffff;
         if (superClass == 0) {
             // this class file must represent the class Object, the only class or interface without a direct superclass.
         } else {
@@ -114,12 +114,12 @@ public class ClassFileReader {
         }
 
         // parse interfaces
-        int interfaceCount = buffer.getShort();
+        int interfaceCount = buffer.getShort() & 0xffff;
         Logger.d("interface count: %d", interfaceCount);
         if (interfaceCount > 0) {
             int interfaceIndex;
             for (int i = 0; i < interfaceCount; i++) {
-                interfaceIndex = buffer.getShort();
+                interfaceIndex = buffer.getShort() & 0xffff;
                 classInfo = (ClassInfo) constantPool[interfaceIndex];
                 classname = (Utf8Info) constantPool[classInfo.nameIndex];
                 Logger.d("interface name: %s", classname.value);
@@ -127,7 +127,7 @@ public class ClassFileReader {
         }
 
         // parse fields count
-        int fieldsCount = buffer.getShort();
+        int fieldsCount = buffer.getShort() & 0xffff;
         Logger.d("fields count: %d", fieldsCount);
         if (fieldsCount > 0) {
             FieldInfo[] fieldInfo = new FieldInfo[fieldsCount];
@@ -136,5 +136,28 @@ public class ClassFileReader {
                 Logger.d("field: %s", ((Utf8Info) constantPool[fieldInfo[i].nameIndex]).value);
             }
         }
+
+        // parse method count
+        int methodsCount = buffer.getShort() & 0xffff;
+        Logger.d("methods count: %d", methodsCount);
+        if (methodsCount > 0) {
+            MethodInfo[] methodInfo = new MethodInfo[methodsCount];
+            for (int i = 0; i < methodsCount; i++) {
+                methodInfo[i] = MethodInfo.readFrom(buffer);
+                Logger.d("method: %s", ((Utf8Info) constantPool[methodInfo[i].nameIndex]).value);
+            }
+        }
+
+        // parse attributes count
+        int attributesCount = buffer.getShort() & 0xffff;
+        Logger.d("attributes count: %d", attributesCount);
+        if (attributesCount > 0) {
+            AttributeInfo[] attributeInfo = new AttributeInfo[attributesCount];
+            for (int i = 0; i < attributesCount; i++) {
+                attributeInfo[i] = AttributeInfo.readFrom(buffer);
+            }
+        }
+
+        Logger.d("parse finish, remain byte: %d", buffer.remaining());
     }
 }

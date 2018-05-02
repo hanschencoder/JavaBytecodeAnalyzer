@@ -7,7 +7,13 @@ import java.nio.ByteBuffer;
  */
 public class AttributeInfo {
 
+    /**
+     * 指向属性名称，如 SourceFile、ConstantValue、Code 等
+     */
     public int attributeNameIndex;
+    /**
+     * 属性数据长度
+     */
     public long attributeLength;
     public byte[] info;
 

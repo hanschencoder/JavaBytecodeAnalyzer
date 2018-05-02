@@ -5,31 +5,33 @@ import java.nio.ByteBuffer;
 /**
  * @author chenhang
  */
-public class FieldInfo {
+public class MethodInfo {
 
     /**
-     * 字段访问标记
+     * 方法访问标记
      */
     public short accessFlags;
     /**
-     * 指向字段名称
+     * 指向方法名称
      */
     public int nameIndex;
     /**
-     * 指向字段描述符
+     * 指向方法签名
      */
     public int descriptionIndex;
     /**
-     * 字段属性数量
+     * 方法属性数量
      */
     public int attributesCount;
     /**
-     * ConstantValue、Synthetic、Signature、Deprecated、RuntimeVisibleAnnotations、RuntimeInvisibleAnnotations
+     * Code、Exceptions、Synthetic、Signature、Deprecated、RuntimeVisibleAnnotations
+     * RuntimeInvisibleAnnotations、RuntimeVisibleParameterAnnotations、RuntimeInvisibleParameterAnnotations
+     * AnnotationDefault
      */
     public AttributeInfo[] attributeInfos;
 
-    public static FieldInfo readFrom(ByteBuffer buffer) {
-        FieldInfo fieldInfo = new FieldInfo();
+    public static MethodInfo readFrom(ByteBuffer buffer) {
+        MethodInfo fieldInfo = new MethodInfo();
         fieldInfo.accessFlags = buffer.getShort();
         fieldInfo.nameIndex = buffer.getShort() & 0xffff;
         fieldInfo.descriptionIndex = buffer.getShort() & 0xffff;

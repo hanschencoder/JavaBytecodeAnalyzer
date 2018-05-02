@@ -5,6 +5,8 @@ import site.hanschen.bytecode.java.ClassFile;
 import java.nio.ByteBuffer;
 
 /**
+ * 存储源文件中的各种字符串
+ *
  * @author chenhang
  */
 public class Utf8Info extends ConstantElement {

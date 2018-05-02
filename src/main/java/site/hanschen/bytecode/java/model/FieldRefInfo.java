@@ -5,16 +5,18 @@ import site.hanschen.bytecode.java.ClassFile;
 import java.nio.ByteBuffer;
 
 /**
+ * 表示对一个字段的符号引用
+ *
  * @author chenhang
  */
 public class FieldRefInfo extends ConstantElement {
 
     /**
-     * 2 byte
+     * 2 byte，指向 CONSTANT_Class_info，被引用字段所在的类
      */
     public int classIndex;
     /**
-     * 2 byte
+     * 2 byte，指向 CONSTANT_NameAndType_info，被引用字段的名称和描述符
      */
     public int nameAndTypeIndex;
 
