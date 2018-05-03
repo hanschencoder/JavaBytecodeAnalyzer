@@ -40,7 +40,7 @@ public class InvokeDynamicInfo extends ConstantElement {
         return null;
     }
 
-    public static class Parser extends ConstantElementParser<InvokeDynamicInfo> {
+    public static class Parser implements ConstantElementParser<InvokeDynamicInfo> {
 
         @Override
         public boolean match(short tag) {

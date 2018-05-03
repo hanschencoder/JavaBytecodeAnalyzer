@@ -41,7 +41,7 @@ public class FieldRefInfo extends ConstantElement {
         return constantPool[classIndex].getComment(constantPool) + "." + constantPool[nameAndTypeIndex].getComment(constantPool);
     }
 
-    public static class Parser extends ConstantElementParser<FieldRefInfo> {
+    public static class Parser implements ConstantElementParser<FieldRefInfo> {
 
         @Override
         public boolean match(short tag) {

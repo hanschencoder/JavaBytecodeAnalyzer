@@ -44,7 +44,7 @@ public class Utf8Info extends ConstantElement {
         return null;
     }
 
-    public static class Parser extends ConstantElementParser<Utf8Info> {
+    public static class Parser implements ConstantElementParser<Utf8Info> {
 
         @Override
         public boolean match(short tag) {

@@ -40,7 +40,7 @@ public class MethodHandleInfo extends ConstantElement {
         return null;
     }
 
-    public static class Parser extends ConstantElementParser<MethodHandleInfo> {
+    public static class Parser implements ConstantElementParser<MethodHandleInfo> {
 
         @Override
         public boolean match(short tag) {

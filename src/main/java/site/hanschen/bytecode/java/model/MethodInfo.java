@@ -1,5 +1,9 @@
 package site.hanschen.bytecode.java.model;
 
+import site.hanschen.bytecode.java.model.attribute.AttributeInfo;
+import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.utils.Logger;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -28,20 +32,22 @@ public class MethodInfo {
      * RuntimeInvisibleAnnotations、RuntimeVisibleParameterAnnotations、RuntimeInvisibleParameterAnnotations
      * AnnotationDefault
      */
-    public AttributeInfo[] attributeInfos;
+    public AttributeInfo[] attributeInfo;
 
-    public static MethodInfo readFrom(ByteBuffer buffer) {
-        MethodInfo fieldInfo = new MethodInfo();
-        fieldInfo.accessFlags = buffer.getShort();
-        fieldInfo.nameIndex = buffer.getShort() & 0xffff;
-        fieldInfo.descriptionIndex = buffer.getShort() & 0xffff;
-        fieldInfo.attributesCount = buffer.getShort() & 0xffff;
-        if (fieldInfo.attributesCount > 0) {
-            fieldInfo.attributeInfos = new AttributeInfo[fieldInfo.attributesCount];
-            for (int i = 0; i < fieldInfo.attributesCount; i++) {
-                fieldInfo.attributeInfos[i] = AttributeInfo.readFrom(buffer);
+    public static MethodInfo readFrom(ByteBuffer buffer, ConstantElement[] constantPool) {
+        MethodInfo methodInfo = new MethodInfo();
+        methodInfo.accessFlags = buffer.getShort();
+        methodInfo.nameIndex = buffer.getShort() & 0xffff;
+        methodInfo.descriptionIndex = buffer.getShort() & 0xffff;
+        methodInfo.attributesCount = buffer.getShort() & 0xffff;
+        if (methodInfo.attributesCount > 0) {
+            methodInfo.attributeInfo = new AttributeInfo[methodInfo.attributesCount];
+            for (int i = 0; i < methodInfo.attributesCount; i++) {
+                AttributeInfo attribute = AttributeInfo.readFrom(buffer, constantPool);
+                methodInfo.attributeInfo[i] = attribute;
+                Logger.d(String.format("attribute:%s, value:%s", attribute.getAttributeName(), attribute.getComment()));
             }
         }
-        return fieldInfo;
+        return methodInfo;
     }
 }

@@ -1,5 +1,7 @@
 package site.hanschen.bytecode.java.utils;
 
+import site.hanschen.bytecode.java.ClassFile;
+
 import java.io.InputStream;
 
 /**
@@ -28,5 +30,15 @@ public class Utils {
             throw new RuntimeException("can't find " + name + " in Resource");
         }
         return inputStream;
+    }
+
+    public static String getClassAccessFlags(short accessFlags) {
+        StringBuilder builder = new StringBuilder();
+        for (ClassFile.ClassAccess access : ClassFile.ClassAccess.values()) {
+            if ((accessFlags & access.getFlag()) != 0) {
+                builder.append(access.name()).append(" ");
+            }
+        }
+        return builder.toString();
     }
 }

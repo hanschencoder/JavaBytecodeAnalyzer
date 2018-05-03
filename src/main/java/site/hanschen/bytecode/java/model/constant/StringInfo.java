@@ -36,7 +36,7 @@ public class StringInfo extends ConstantElement {
         return constantPool[stringIndex].getValue();
     }
 
-    public static class Parser extends ConstantElementParser<StringInfo> {
+    public static class Parser implements ConstantElementParser<StringInfo> {
 
         @Override
         public boolean match(short tag) {

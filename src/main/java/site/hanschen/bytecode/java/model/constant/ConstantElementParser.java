@@ -5,9 +5,9 @@ import java.nio.ByteBuffer;
 /**
  * @author chenhang
  */
-public abstract class ConstantElementParser<T extends ConstantElement> {
+public interface ConstantElementParser<T extends ConstantElement> {
 
-    public abstract boolean match(short tag);
+    boolean match(short tag);
 
-    public abstract T create(ByteBuffer buffer);
+    T create(ByteBuffer buffer);
 }

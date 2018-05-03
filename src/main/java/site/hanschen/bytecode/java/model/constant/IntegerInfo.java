@@ -33,7 +33,7 @@ public class IntegerInfo extends ConstantElement {
         return null;
     }
 
-    public static class Parser extends ConstantElementParser<IntegerInfo> {
+    public static class Parser implements ConstantElementParser<IntegerInfo> {
 
         @Override
         public boolean match(short tag) {

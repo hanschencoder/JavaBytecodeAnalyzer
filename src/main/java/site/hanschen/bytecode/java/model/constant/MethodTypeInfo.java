@@ -34,7 +34,7 @@ public class MethodTypeInfo extends ConstantElement {
         return constantPool[descriptorIndex].getValue();
     }
 
-    public static class Parser extends ConstantElementParser<MethodTypeInfo> {
+    public static class Parser implements ConstantElementParser<MethodTypeInfo> {
 
         @Override
         public boolean match(short tag) {

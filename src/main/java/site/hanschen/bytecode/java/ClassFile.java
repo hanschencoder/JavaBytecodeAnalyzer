@@ -46,6 +46,10 @@ public class ClassFile {
         ClassAccess(int flag) {
             this.flag = flag;
         }
+
+        public int getFlag() {
+            return flag;
+        }
     }
 
     /**

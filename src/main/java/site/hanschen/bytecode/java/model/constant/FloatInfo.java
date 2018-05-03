@@ -34,7 +34,7 @@ public class FloatInfo extends ConstantElement {
         return null;
     }
 
-    public static class Parser extends ConstantElementParser<FloatInfo> {
+    public static class Parser implements ConstantElementParser<FloatInfo> {
 
         @Override
         public boolean match(short tag) {

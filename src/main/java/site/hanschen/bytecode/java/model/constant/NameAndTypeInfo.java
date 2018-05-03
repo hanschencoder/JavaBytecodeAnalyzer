@@ -41,7 +41,7 @@ public class NameAndTypeInfo extends ConstantElement {
         return constantPool[nameIndex].getValue() + ":" + constantPool[descriptionIndex].getValue();
     }
 
-    public static class Parser extends ConstantElementParser<NameAndTypeInfo> {
+    public static class Parser implements ConstantElementParser<NameAndTypeInfo> {
 
         @Override
         public boolean match(short tag) {
