@@ -1,4 +1,4 @@
-package site.hanschen.bytecode.java.model;
+package site.hanschen.bytecode.java.model.constant;
 
 import site.hanschen.bytecode.java.ClassFile;
 
@@ -22,6 +22,22 @@ public class InvokeDynamicInfo extends ConstantElement {
         super(tag);
         this.bootstrapMethodAttrIndex = bootstrapMethodAttrIndex;
         this.nameAndTypeIndex = nameAndTypeIndex;
+    }
+
+    @Override
+    public String getTag() {
+        return "InvokeDynamic";
+    }
+
+    @Override
+    public String getValue() {
+        return String.format("#%d:#%d", bootstrapMethodAttrIndex, nameAndTypeIndex);
+    }
+
+    @Override
+    public String getComment(ConstantElement[] constantPool) {
+        // TODO: show comment here
+        return null;
     }
 
     public static class Parser extends ConstantElementParser<InvokeDynamicInfo> {

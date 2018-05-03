@@ -1,4 +1,4 @@
-package site.hanschen.bytecode.java.model;
+package site.hanschen.bytecode.java.model.constant;
 
 import site.hanschen.bytecode.java.ClassFile;
 
@@ -24,6 +24,21 @@ public class FieldRefInfo extends ConstantElement {
         super(tag);
         this.classIndex = classIndex;
         this.nameAndTypeIndex = nameAndTypeIndex;
+    }
+
+    @Override
+    public String getTag() {
+        return "FieldRef";
+    }
+
+    @Override
+    public String getValue() {
+        return String.format("#%d:#%d", classIndex, nameAndTypeIndex);
+    }
+
+    @Override
+    public String getComment(ConstantElement[] constantPool) {
+        return constantPool[classIndex].getComment(constantPool) + "." + constantPool[nameAndTypeIndex].getComment(constantPool);
     }
 
     public static class Parser extends ConstantElementParser<FieldRefInfo> {

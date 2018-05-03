@@ -1,4 +1,4 @@
-package site.hanschen.bytecode.java.model;
+package site.hanschen.bytecode.java.model.constant;
 
 import site.hanschen.bytecode.java.ClassFile;
 
@@ -21,6 +21,21 @@ public class ClassInfo extends ConstantElement {
         this.nameIndex = nameIndex;
     }
 
+    @Override
+    public String getTag() {
+        return "Class";
+    }
+
+    @Override
+    public String getValue() {
+        return "#" + nameIndex;
+    }
+
+    @Override
+    public String getComment(ConstantElement[] constantPool) {
+        return constantPool[nameIndex].getValue();
+    }
+
     public static class Parser extends ConstantElementParser<ClassInfo> {
 
         @Override
@@ -34,10 +49,5 @@ public class ClassInfo extends ConstantElement {
             int nameIndex = buffer.getShort() & 0xffff;
             return new ClassInfo(tag, nameIndex);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "ClassInfo{" + "nameIndex=" + nameIndex + '}';
     }
 }

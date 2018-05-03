@@ -1,10 +1,12 @@
 package site.hanschen.bytecode.java;
 
 import org.apache.commons.io.IOUtils;
-import site.hanschen.bytecode.java.model.*;
+import site.hanschen.bytecode.java.model.AttributeInfo;
+import site.hanschen.bytecode.java.model.FieldInfo;
+import site.hanschen.bytecode.java.model.MethodInfo;
+import site.hanschen.bytecode.java.model.constant.*;
 import site.hanschen.bytecode.java.utils.Logger;
 import site.hanschen.bytecode.java.utils.Utils;
-import sun.rmi.runtime.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,6 +74,7 @@ public class ClassFileReader {
         Logger.d("constantPoolCount: %d", constantPoolCount);
 
         // attention, The constant_pool table is indexed from 1 to constant_pool_count-1
+        // constantPool actual size: constant_pool_count-1
         ConstantElement[] constantPool = new ConstantElement[constantPoolCount];
         for (int i = 1; i < constantPoolCount; i++) {
             short tag = buffer.get();
@@ -90,7 +93,15 @@ public class ClassFileReader {
 
             ConstantElement element = parser.create(buffer);
             constantPool[i] = element;
-            Logger.d("index: %d, tag:%d, element:%s", i, element.tag, element.toString());
+        }
+        for (int i = 1; i < constantPoolCount; i ++) {
+            ConstantElement element = constantPool[i];
+            String comment = element.getComment(constantPool);
+            if (comment != null && comment.length() > 0) {
+                Logger.d("#%02d  =  %-20s %-10s // %s", i, element.getTag(), element.getValue(), comment);
+            } else {
+                Logger.d("#%02d  =  %-20s %s", i, element.getTag(), element.getValue());
+            }
         }
 
         // parse access flags

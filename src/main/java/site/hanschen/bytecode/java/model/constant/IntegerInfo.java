@@ -1,4 +1,4 @@
-package site.hanschen.bytecode.java.model;
+package site.hanschen.bytecode.java.model.constant;
 
 import site.hanschen.bytecode.java.ClassFile;
 
@@ -16,6 +16,21 @@ public class IntegerInfo extends ConstantElement {
     public IntegerInfo(short tag, int value) {
         super(tag);
         this.value = value;
+    }
+
+    @Override
+    public String getTag() {
+        return "Integer";
+    }
+
+    @Override
+    public String getValue() {
+        return String.valueOf(value);
+    }
+
+    @Override
+    public String getComment(ConstantElement[] constantPool) {
+        return null;
     }
 
     public static class Parser extends ConstantElementParser<IntegerInfo> {

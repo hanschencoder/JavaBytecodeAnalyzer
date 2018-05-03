@@ -1,4 +1,4 @@
-package site.hanschen.bytecode.java.model;
+package site.hanschen.bytecode.java.model.constant;
 
 import site.hanschen.bytecode.java.ClassFile;
 
@@ -24,6 +24,21 @@ public class NameAndTypeInfo extends ConstantElement {
         super(tag);
         this.nameIndex = nameIndex;
         this.descriptionIndex = descriptionIndex;
+    }
+
+    @Override
+    public String getTag() {
+        return "NameAndType";
+    }
+
+    @Override
+    public String getValue() {
+        return String.format("#%d:#%d", nameIndex, descriptionIndex);
+    }
+
+    @Override
+    public String getComment(ConstantElement[] constantPool) {
+        return constantPool[nameIndex].getValue() + ":" + constantPool[descriptionIndex].getValue();
     }
 
     public static class Parser extends ConstantElementParser<NameAndTypeInfo> {

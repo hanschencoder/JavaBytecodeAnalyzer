@@ -1,4 +1,4 @@
-package site.hanschen.bytecode.java.model;
+package site.hanschen.bytecode.java.model.constant;
 
 import site.hanschen.bytecode.java.ClassFile;
 
@@ -17,6 +17,21 @@ public class MethodTypeInfo extends ConstantElement {
     public MethodTypeInfo(short tag, int descriptorIndex) {
         super(tag);
         this.descriptorIndex = descriptorIndex;
+    }
+
+    @Override
+    public String getTag() {
+        return "MethodType";
+    }
+
+    @Override
+    public String getValue() {
+        return "#" + descriptorIndex;
+    }
+
+    @Override
+    public String getComment(ConstantElement[] constantPool) {
+        return constantPool[descriptorIndex].getValue();
     }
 
     public static class Parser extends ConstantElementParser<MethodTypeInfo> {

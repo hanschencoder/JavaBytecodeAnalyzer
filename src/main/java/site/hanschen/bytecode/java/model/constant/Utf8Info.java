@@ -1,4 +1,4 @@
-package site.hanschen.bytecode.java.model;
+package site.hanschen.bytecode.java.model.constant;
 
 import site.hanschen.bytecode.java.ClassFile;
 
@@ -27,6 +27,21 @@ public class Utf8Info extends ConstantElement {
         this.length = length;
         this.bytes = bytes;
         this.value = new String(bytes);
+    }
+
+    @Override
+    public String getTag() {
+        return "Utf8";
+    }
+
+    @Override
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String getComment(ConstantElement[] constantPool) {
+        return null;
     }
 
     public static class Parser extends ConstantElementParser<Utf8Info> {

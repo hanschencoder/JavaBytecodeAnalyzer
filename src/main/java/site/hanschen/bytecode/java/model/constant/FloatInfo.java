@@ -1,4 +1,4 @@
-package site.hanschen.bytecode.java.model;
+package site.hanschen.bytecode.java.model.constant;
 
 import site.hanschen.bytecode.java.ClassFile;
 import sun.misc.FloatConsts;
@@ -17,6 +17,21 @@ public class FloatInfo extends ConstantElement {
     public FloatInfo(short tag, float value) {
         super(tag);
         this.value = value;
+    }
+
+    @Override
+    public String getTag() {
+        return "Float";
+    }
+
+    @Override
+    public String getValue() {
+        return String.valueOf(value);
+    }
+
+    @Override
+    public String getComment(ConstantElement[] constantPool) {
+        return null;
     }
 
     public static class Parser extends ConstantElementParser<FloatInfo> {
