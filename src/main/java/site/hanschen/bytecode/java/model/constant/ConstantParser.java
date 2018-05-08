@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 /**
  * @author chenhang
  */
-public interface ConstantElementParser<T extends ConstantElement> {
+public interface ConstantParser<T extends Constant> {
 
     boolean match(short tag);
 

@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -36,9 +36,9 @@ public abstract class AttributeInfo {
     /**
      * 常量池
      */
-    protected ConstantElement[] constantPool;
+    protected Constant[] constantPool;
 
-    public AttributeInfo(int attributeNameIndex, long attributeLength, ConstantElement[] constantPool) {
+    public AttributeInfo(int attributeNameIndex, long attributeLength, Constant[] constantPool) {
         this.attributeNameIndex = attributeNameIndex;
         this.attributeLength = attributeLength;
         this.constantPool = constantPool;
@@ -67,7 +67,7 @@ public abstract class AttributeInfo {
         return getAttributeName() + " " + getValue();
     }
 
-    public static AttributeInfo readFrom(ByteBuffer buffer, ConstantElement[] constantPool) {
+    public static AttributeInfo readFrom(ByteBuffer buffer, Constant[] constantPool) {
         int attributeNameIndex = buffer.getShort() & 0xffff;
         // reset position at attributeNameIndex
         buffer.position(buffer.position() - 2);

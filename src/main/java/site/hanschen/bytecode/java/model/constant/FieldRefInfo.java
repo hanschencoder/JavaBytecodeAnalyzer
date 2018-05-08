@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  *
  * @author chenhang
  */
-public class FieldRefInfo extends ConstantElement {
+public class FieldRefInfo extends Constant {
 
     /**
      * 2 byte，指向 CONSTANT_Class_info，被引用字段所在的类
@@ -37,11 +37,11 @@ public class FieldRefInfo extends ConstantElement {
     }
 
     @Override
-    public String getComment(ConstantElement[] constantPool) {
+    public String getComment(Constant[] constantPool) {
         return constantPool[classIndex].getComment(constantPool) + "." + constantPool[nameAndTypeIndex].getComment(constantPool);
     }
 
-    public static class Parser implements ConstantElementParser<FieldRefInfo> {
+    public static class Parser implements ConstantParser<FieldRefInfo> {
 
         @Override
         public boolean match(short tag) {

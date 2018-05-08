@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
  *
  * @author chenhang
  */
-public class FloatInfo extends ConstantElement {
+public class FloatInfo extends Constant {
 
     public float value;
 
@@ -30,11 +30,11 @@ public class FloatInfo extends ConstantElement {
     }
 
     @Override
-    public String getComment(ConstantElement[] constantPool) {
+    public String getComment(Constant[] constantPool) {
         return null;
     }
 
-    public static class Parser implements ConstantElementParser<FloatInfo> {
+    public static class Parser implements ConstantParser<FloatInfo> {
 
         @Override
         public boolean match(short tag) {

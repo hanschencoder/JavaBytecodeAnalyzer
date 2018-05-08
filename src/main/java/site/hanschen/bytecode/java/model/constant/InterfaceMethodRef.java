@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  *
  * @author chenhang
  */
-public class InterfaceMethodRef extends ConstantElement {
+public class InterfaceMethodRef extends Constant {
 
     /**
      * 2 byte，指向 CONSTANT_Class_info，被引用方法所在的接口
@@ -37,11 +37,11 @@ public class InterfaceMethodRef extends ConstantElement {
     }
 
     @Override
-    public String getComment(ConstantElement[] constantPool) {
+    public String getComment(Constant[] constantPool) {
         return constantPool[classIndex].getComment(constantPool) + "." + constantPool[nameAndTypeIndex].getComment(constantPool);
     }
 
-    public static class Parser implements ConstantElementParser<InterfaceMethodRef> {
+    public static class Parser implements ConstantParser<InterfaceMethodRef> {
 
         @Override
         public boolean match(short tag) {

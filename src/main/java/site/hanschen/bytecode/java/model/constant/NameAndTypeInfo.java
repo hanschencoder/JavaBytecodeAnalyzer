@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  *
  * @author chenhang
  */
-public class NameAndTypeInfo extends ConstantElement {
+public class NameAndTypeInfo extends Constant {
 
     /**
      * 2 byte， 被引用的方法或者字段名称
@@ -37,11 +37,11 @@ public class NameAndTypeInfo extends ConstantElement {
     }
 
     @Override
-    public String getComment(ConstantElement[] constantPool) {
+    public String getComment(Constant[] constantPool) {
         return constantPool[nameIndex].getValue() + ":" + constantPool[descriptionIndex].getValue();
     }
 
-    public static class Parser implements ConstantElementParser<NameAndTypeInfo> {
+    public static class Parser implements ConstantParser<NameAndTypeInfo> {
 
         @Override
         public boolean match(short tag) {

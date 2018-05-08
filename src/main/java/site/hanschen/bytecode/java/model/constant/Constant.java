@@ -3,11 +3,11 @@ package site.hanschen.bytecode.java.model.constant;
 /**
  * @author chenhang
  */
-public abstract class ConstantElement {
+public abstract class Constant {
 
     public short tag;
 
-    public ConstantElement(short tag) {
+    public Constant(short tag) {
         this.tag = tag;
     }
 
@@ -24,5 +24,5 @@ public abstract class ConstantElement {
     /**
      * 进一步解释常量池内容
      */
-    abstract public String getComment(ConstantElement[] constantPool);
+    abstract public String getComment(Constant[] constantPool);
 }

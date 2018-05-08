@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 
@@ -11,6 +11,6 @@ public interface AttributeParser<T extends AttributeInfo> {
 
     boolean match(String attributeName);
 
-    T create(ByteBuffer buffer, ConstantElement[] constantPool);
+    T create(ByteBuffer buffer, Constant[] constantPool);
 
 }

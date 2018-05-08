@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  *
  * @author chenhang
  */
-public class LongInfo extends ConstantElement {
+public class LongInfo extends Constant {
 
     public long value;
 
@@ -29,11 +29,11 @@ public class LongInfo extends ConstantElement {
     }
 
     @Override
-    public String getComment(ConstantElement[] constantPool) {
+    public String getComment(Constant[] constantPool) {
         return null;
     }
 
-    public static class Parser implements ConstantElementParser<LongInfo> {
+    public static class Parser implements ConstantParser<LongInfo> {
 
         @Override
         public boolean match(short tag) {

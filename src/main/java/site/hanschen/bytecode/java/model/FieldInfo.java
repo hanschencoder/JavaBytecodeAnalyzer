@@ -1,7 +1,7 @@
 package site.hanschen.bytecode.java.model;
 
 import site.hanschen.bytecode.java.model.attribute.AttributeInfo;
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 import site.hanschen.bytecode.java.utils.Logger;
 
 import java.nio.ByteBuffer;
@@ -32,7 +32,7 @@ public class FieldInfo {
      */
     public AttributeInfo[] attributeInfo;
 
-    public static FieldInfo readFrom(ByteBuffer buffer, ConstantElement[] constantPool) {
+    public static FieldInfo readFrom(ByteBuffer buffer, Constant[] constantPool) {
         FieldInfo fieldInfo = new FieldInfo();
         fieldInfo.accessFlags = buffer.getShort();
         fieldInfo.nameIndex = buffer.getShort() & 0xffff;

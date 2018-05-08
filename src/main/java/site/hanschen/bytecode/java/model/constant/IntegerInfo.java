@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  *
  * @author chenhang
  */
-public class IntegerInfo extends ConstantElement {
+public class IntegerInfo extends Constant {
 
     public int value;
 
@@ -29,11 +29,11 @@ public class IntegerInfo extends ConstantElement {
     }
 
     @Override
-    public String getComment(ConstantElement[] constantPool) {
+    public String getComment(Constant[] constantPool) {
         return null;
     }
 
-    public static class Parser implements ConstantElementParser<IntegerInfo> {
+    public static class Parser implements ConstantParser<IntegerInfo> {
 
         @Override
         public boolean match(short tag) {

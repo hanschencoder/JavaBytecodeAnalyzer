@@ -4,9 +4,6 @@ import org.apache.commons.io.IOUtils;
 import site.hanschen.bytecode.java.model.FieldInfo;
 import site.hanschen.bytecode.java.model.MethodInfo;
 import site.hanschen.bytecode.java.model.attribute.AttributeInfo;
-import site.hanschen.bytecode.java.model.constant.*;
-import site.hanschen.bytecode.java.utils.Logger;
-import site.hanschen.bytecode.java.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,32 +11,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author chenhang
  */
 public class ClassFileReader {
 
-    private static List<ConstantElementParser> PARSERS = new ArrayList<>();
-
-    static {
-        PARSERS.add(new ClassInfo.Parser());
-        PARSERS.add(new FieldRefInfo.Parser());
-        PARSERS.add(new MethodRefInfo.Parser());
-        PARSERS.add(new InterfaceMethodRef.Parser());
-        PARSERS.add(new StringInfo.Parser());
-        PARSERS.add(new IntegerInfo.Parser());
-        PARSERS.add(new FloatInfo.Parser());
-        PARSERS.add(new LongInfo.Parser());
-        PARSERS.add(new DoubleInfo.Parser());
-        PARSERS.add(new NameAndTypeInfo.Parser());
-        PARSERS.add(new Utf8Info.Parser());
-        PARSERS.add(new MethodHandleInfo.Parser());
-        PARSERS.add(new MethodTypeInfo.Parser());
-        PARSERS.add(new InvokeDynamicInfo.Parser());
-    }
+    private int minor;
+    private int major;
+    private ConstantPool constantPool;
+    private short accessFlags;
+    private int thisClassIndex;
+    private int superClass;
+    private int interfaceCount;
+    private int[] interfaces;
+    private int fieldsCount;
+    private FieldInfo[] fieldInfo;
+    private int methodsCount;
+    private MethodInfo[] methodInfo;
+    private int attributesCount;
+    private AttributeInfo[] attributeInfo;
 
     public ClassFileReader(File file) throws IOException {
         this(new FileInputStream(file));
@@ -63,112 +54,113 @@ public class ClassFileReader {
             throw new IllegalArgumentException(String.format("invalid java class file, magic number: 0x%X", magic));
         }
 
-        // show version.
-        int minor = buffer.getShort() & 0xffff;
-        int major = buffer.getShort() & 0xffff;
-        Logger.d("bytecode version: %d.%d", major, minor);
+        // parse version
+        minor = buffer.getShort() & 0xffff;
+        major = buffer.getShort() & 0xffff;
 
-        // constant_pool_count
-        int constantPoolCount = buffer.getShort() & 0xffff;
-        Logger.d("constantPoolCount: %d", constantPoolCount);
-
-        // attention, The constant_pool table is indexed from 1 to constant_pool_count-1
-        // constantPool actual size: constant_pool_count-1
-        final ConstantElement[] constantPool = new ConstantElement[constantPoolCount];
-        for (int i = 1; i < constantPoolCount; i++) {
-            short tag = buffer.get();
-            // reset position at tag data
-            buffer.position(buffer.position() - 1);
-            ConstantElementParser parser = null;
-            for (ConstantElementParser p : PARSERS) {
-                if (p.match(tag)) {
-                    parser = p;
-                    break;
-                }
-            }
-            if (parser == null) {
-                throw new IllegalStateException("unsupported tag: " + tag);
-            }
-
-            ConstantElement element = parser.create(buffer);
-            constantPool[i] = element;
-        }
-        // print constant pool info
-        for (int i = 1; i < constantPoolCount; i++) {
-            ConstantElement element = constantPool[i];
-            String comment = element.getComment(constantPool);
-            int width = String.valueOf(constantPoolCount).length() + 1;
-            if (comment != null && comment.length() > 0) {
-                Logger.d("%" + width + "s  =  %-20s %-10s // %s", ("#" + i), element.getTag(), element.getValue(), comment);
-            } else {
-                Logger.d("%" + width + "s  =  %-20s %s", ("#" + i), element.getTag(), element.getValue());
-            }
-        }
+        // parse constant pool
+        constantPool = ConstantPool.readFrom(buffer);
 
         // parse access flags
-        short accessFlags = buffer.getShort();
-        Logger.d("accessFlags: %s", Utils.getClassAccessFlags(accessFlags));
+        accessFlags = buffer.getShort();
 
         // get class name
-        int thisClassIndex = buffer.getShort() & 0xffff;
-        ClassInfo classInfo = (ClassInfo) constantPool[thisClassIndex];
-        Logger.d("this.class: %s", classInfo.getComment(constantPool));
+        thisClassIndex = buffer.getShort() & 0xffff;
 
         // parse super class name
-        int superClass = buffer.getShort() & 0xffff;
-        if (superClass == 0) {
-            // this class file must represent the class Object, the only class or interface without a direct superclass.
-        } else {
-            classInfo = (ClassInfo) constantPool[superClass];
-            Logger.d("super.class: %s", classInfo.getComment(constantPool));
-        }
+        superClass = buffer.getShort() & 0xffff;
 
         // parse interfaces
-        int interfaceCount = buffer.getShort() & 0xffff;
-        Logger.d("interface count: %d", interfaceCount);
+        interfaceCount = buffer.getShort() & 0xffff;
         if (interfaceCount > 0) {
-            int interfaceIndex;
+            interfaces = new int[interfaceCount];
             for (int i = 0; i < interfaceCount; i++) {
-                interfaceIndex = buffer.getShort() & 0xffff;
-                classInfo = (ClassInfo) constantPool[interfaceIndex];
-                Logger.d("interface: %s", classInfo.getComment(constantPool));
+                interfaces[i] = buffer.getShort() & 0xffff;
             }
         }
 
         // parse fields count
-        int fieldsCount = buffer.getShort() & 0xffff;
-        Logger.d("fields count: %d", fieldsCount);
+        fieldsCount = buffer.getShort() & 0xffff;
         if (fieldsCount > 0) {
-            FieldInfo[] fieldInfo = new FieldInfo[fieldsCount];
+            fieldInfo = new FieldInfo[fieldsCount];
             for (int i = 0; i < fieldsCount; i++) {
-                fieldInfo[i] = FieldInfo.readFrom(buffer, constantPool);
-                Logger.d("field: %s", constantPool[fieldInfo[i].nameIndex].getValue());
+                fieldInfo[i] = FieldInfo.readFrom(buffer, constantPool.getConstantPool());
             }
         }
 
         // parse method count
-        int methodsCount = buffer.getShort() & 0xffff;
-        Logger.d("methods count: %d", methodsCount);
+        methodsCount = buffer.getShort() & 0xffff;
         if (methodsCount > 0) {
-            MethodInfo[] methodInfo = new MethodInfo[methodsCount];
+            methodInfo = new MethodInfo[methodsCount];
             for (int i = 0; i < methodsCount; i++) {
-                methodInfo[i] = MethodInfo.readFrom(buffer, constantPool);
-                Logger.d("method: %s", constantPool[methodInfo[i].nameIndex].getValue());
+                methodInfo[i] = MethodInfo.readFrom(buffer, constantPool.getConstantPool());
             }
         }
 
         // parse attributes count
-        int attributesCount = buffer.getShort() & 0xffff;
-        Logger.d("attributes count: %d", attributesCount);
+        attributesCount = buffer.getShort() & 0xffff;
         if (attributesCount > 0) {
-            AttributeInfo[] attributeInfo = new AttributeInfo[attributesCount];
+            attributeInfo = new AttributeInfo[attributesCount];
             for (int i = 0; i < attributesCount; i++) {
-                AttributeInfo attribute = AttributeInfo.readFrom(buffer, constantPool);
-                Logger.d(String.format("attribute:%s, value:%s", attribute.getAttributeName(), attribute.getComment()));
+                AttributeInfo attribute = AttributeInfo.readFrom(buffer, constantPool.getConstantPool());
                 attributeInfo[i] = attribute;
             }
         }
+    }
 
-        Logger.d("parse finish, remain byte: %d", buffer.remaining());
+    public int getMinor() {
+        return minor;
+    }
+
+    public int getMajor() {
+        return major;
+    }
+
+    public ConstantPool getConstantPool() {
+        return constantPool;
+    }
+
+    public short getAccessFlags() {
+        return accessFlags;
+    }
+
+    public int getThisClassIndex() {
+        return thisClassIndex;
+    }
+
+    public int getSuperClass() {
+        return superClass;
+    }
+
+    public int getInterfaceCount() {
+        return interfaceCount;
+    }
+
+    public int[] getInterfaces() {
+        return interfaces;
+    }
+
+    public int getFieldsCount() {
+        return fieldsCount;
+    }
+
+    public FieldInfo[] getFieldInfo() {
+        return fieldInfo;
+    }
+
+    public int getMethodsCount() {
+        return methodsCount;
+    }
+
+    public MethodInfo[] getMethodInfo() {
+        return methodInfo;
+    }
+
+    public int getAttributesCount() {
+        return attributesCount;
+    }
+
+    public AttributeInfo[] getAttributeInfo() {
+        return attributeInfo;
     }
 }

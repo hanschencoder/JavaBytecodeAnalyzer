@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 
@@ -18,7 +18,7 @@ public class ConstantValueAttribute extends AttributeInfo {
      */
     public int constantValueIndex;
 
-    public ConstantValueAttribute(int attributeNameIndex, long attributeLength, ConstantElement[] constantPool) {
+    public ConstantValueAttribute(int attributeNameIndex, long attributeLength, Constant[] constantPool) {
         super(attributeNameIndex, attributeLength, constantPool);
     }
 
@@ -40,7 +40,7 @@ public class ConstantValueAttribute extends AttributeInfo {
         }
 
         @Override
-        public ConstantValueAttribute create(ByteBuffer buffer, ConstantElement[] constantPool) {
+        public ConstantValueAttribute create(ByteBuffer buffer, Constant[] constantPool) {
             int attributeNameIndex = buffer.getShort() & 0xffff;
             long attributeLength = buffer.getInt() & 0xffffffffL;
             int constantValueIndex = buffer.getShort() & 0xffff;

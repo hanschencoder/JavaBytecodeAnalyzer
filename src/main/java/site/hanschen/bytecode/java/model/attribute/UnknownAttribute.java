@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 
@@ -11,7 +11,7 @@ public class UnknownAttribute extends AttributeInfo {
 
     public byte[] data;
 
-    public UnknownAttribute(int attributeNameIndex, long attributeLength, ConstantElement[] constantPool) {
+    public UnknownAttribute(int attributeNameIndex, long attributeLength, Constant[] constantPool) {
         super(attributeNameIndex, attributeLength, constantPool);
     }
 
@@ -34,7 +34,7 @@ public class UnknownAttribute extends AttributeInfo {
         }
 
         @Override
-        public UnknownAttribute create(ByteBuffer buffer, ConstantElement[] constantPool) {
+        public UnknownAttribute create(ByteBuffer buffer, Constant[] constantPool) {
             int attributeNameIndex = buffer.getShort() & 0xffff;
             long attributeLength = buffer.getInt() & 0xffffffffL;
             byte[] data = new byte[(int) attributeLength];

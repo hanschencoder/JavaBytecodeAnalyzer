@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 
@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
  */
 public class SyntheticAttribute extends AttributeInfo {
 
-    public SyntheticAttribute(int attributeNameIndex, long attributeLength, ConstantElement[] constantPool) {
+    public SyntheticAttribute(int attributeNameIndex, long attributeLength, Constant[] constantPool) {
         super(attributeNameIndex, attributeLength, constantPool);
     }
 
@@ -35,7 +35,7 @@ public class SyntheticAttribute extends AttributeInfo {
         }
 
         @Override
-        public SyntheticAttribute create(ByteBuffer buffer, ConstantElement[] constantPool) {
+        public SyntheticAttribute create(ByteBuffer buffer, Constant[] constantPool) {
             int attributeNameIndex = buffer.getShort() & 0xffff;
             long attributeLength = buffer.getInt() & 0xffffffffL;
 

@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 
@@ -11,7 +11,7 @@ public class SignatureAttribute extends AttributeInfo {
 
     public int signatureIndex;
 
-    public SignatureAttribute(int attributeNameIndex, long attributeLength, ConstantElement[] constantPool) {
+    public SignatureAttribute(int attributeNameIndex, long attributeLength, Constant[] constantPool) {
         super(attributeNameIndex, attributeLength, constantPool);
     }
 
@@ -33,7 +33,7 @@ public class SignatureAttribute extends AttributeInfo {
         }
 
         @Override
-        public SignatureAttribute create(ByteBuffer buffer, ConstantElement[] constantPool) {
+        public SignatureAttribute create(ByteBuffer buffer, Constant[] constantPool) {
             int attributeNameIndex = buffer.getShort() & 0xffff;
             long attributeLength = buffer.getInt() & 0xffffffffL;
             int signatureIndex = buffer.getShort() & 0xffff;

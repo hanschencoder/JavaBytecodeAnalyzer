@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  *
  * @author chenhang
  */
-public class Utf8Info extends ConstantElement {
+public class Utf8Info extends Constant {
 
     /**
      * 2 byte
@@ -40,11 +40,11 @@ public class Utf8Info extends ConstantElement {
     }
 
     @Override
-    public String getComment(ConstantElement[] constantPool) {
+    public String getComment(Constant[] constantPool) {
         return null;
     }
 
-    public static class Parser implements ConstantElementParser<Utf8Info> {
+    public static class Parser implements ConstantParser<Utf8Info> {
 
         @Override
         public boolean match(short tag) {

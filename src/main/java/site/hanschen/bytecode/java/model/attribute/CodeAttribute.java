@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 
@@ -18,7 +18,7 @@ public class CodeAttribute extends AttributeInfo {
     public int attributesCount;
     public AttributeInfo[] attributeInfo;
 
-    public CodeAttribute(int attributeNameIndex, long attributeLength, ConstantElement[] constantPool) {
+    public CodeAttribute(int attributeNameIndex, long attributeLength, Constant[] constantPool) {
         super(attributeNameIndex, attributeLength, constantPool);
     }
 
@@ -47,7 +47,7 @@ public class CodeAttribute extends AttributeInfo {
         }
 
         @Override
-        public CodeAttribute create(ByteBuffer buffer, ConstantElement[] constantPool) {
+        public CodeAttribute create(ByteBuffer buffer, Constant[] constantPool) {
             int attributeNameIndex = buffer.getShort() & 0xffff;
             long attributeLength = buffer.getInt() & 0xffffffffL;
             int maxStack = buffer.getShort() & 0xffff;

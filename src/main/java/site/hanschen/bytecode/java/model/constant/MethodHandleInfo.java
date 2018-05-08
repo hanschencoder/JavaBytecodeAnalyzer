@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 /**
  * @author chenhang
  */
-public class MethodHandleInfo extends ConstantElement {
+public class MethodHandleInfo extends Constant {
 
     /**
      * 1 byte
@@ -35,12 +35,12 @@ public class MethodHandleInfo extends ConstantElement {
     }
 
     @Override
-    public String getComment(ConstantElement[] constantPool) {
+    public String getComment(Constant[] constantPool) {
         // TODO: show comment here
         return null;
     }
 
-    public static class Parser implements ConstantElementParser<MethodHandleInfo> {
+    public static class Parser implements ConstantParser<MethodHandleInfo> {
 
         @Override
         public boolean match(short tag) {

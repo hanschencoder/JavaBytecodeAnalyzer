@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 
@@ -13,7 +13,7 @@ public class SourceFileAttribute extends AttributeInfo {
 
     public int sourceFileIndex;
 
-    public SourceFileAttribute(int attributeNameIndex, long attributeLength, ConstantElement[] constantPool) {
+    public SourceFileAttribute(int attributeNameIndex, long attributeLength, Constant[] constantPool) {
         super(attributeNameIndex, attributeLength, constantPool);
     }
 
@@ -35,7 +35,7 @@ public class SourceFileAttribute extends AttributeInfo {
         }
 
         @Override
-        public SourceFileAttribute create(ByteBuffer buffer, ConstantElement[] constantPool) {
+        public SourceFileAttribute create(ByteBuffer buffer, Constant[] constantPool) {
             int attributeNameIndex = buffer.getShort() & 0xffff;
             long attributeLength = buffer.getInt() & 0xffffffffL;
             int sourceFileIndex = buffer.getShort() & 0xffff;

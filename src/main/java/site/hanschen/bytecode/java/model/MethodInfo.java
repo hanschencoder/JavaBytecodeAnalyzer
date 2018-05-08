@@ -1,7 +1,7 @@
 package site.hanschen.bytecode.java.model;
 
 import site.hanschen.bytecode.java.model.attribute.AttributeInfo;
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 import site.hanschen.bytecode.java.utils.Logger;
 
 import java.nio.ByteBuffer;
@@ -34,7 +34,7 @@ public class MethodInfo {
      */
     public AttributeInfo[] attributeInfo;
 
-    public static MethodInfo readFrom(ByteBuffer buffer, ConstantElement[] constantPool) {
+    public static MethodInfo readFrom(ByteBuffer buffer, Constant[] constantPool) {
         MethodInfo methodInfo = new MethodInfo();
         methodInfo.accessFlags = buffer.getShort();
         methodInfo.nameIndex = buffer.getShort() & 0xffff;

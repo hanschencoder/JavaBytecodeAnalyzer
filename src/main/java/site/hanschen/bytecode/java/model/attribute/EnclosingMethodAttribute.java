@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 
@@ -12,7 +12,7 @@ public class EnclosingMethodAttribute extends AttributeInfo {
     public int classIndex;
     public int methodIndex;
 
-    public EnclosingMethodAttribute(int attributeNameIndex, long attributeLength, ConstantElement[] constantPool) {
+    public EnclosingMethodAttribute(int attributeNameIndex, long attributeLength, Constant[] constantPool) {
         super(attributeNameIndex, attributeLength, constantPool);
     }
 
@@ -34,7 +34,7 @@ public class EnclosingMethodAttribute extends AttributeInfo {
         }
 
         @Override
-        public EnclosingMethodAttribute create(ByteBuffer buffer, ConstantElement[] constantPool) {
+        public EnclosingMethodAttribute create(ByteBuffer buffer, Constant[] constantPool) {
             int attributeNameIndex = buffer.getShort() & 0xffff;
             long attributeLength = buffer.getInt() & 0xffffffffL;
             int classIndex = buffer.getShort() & 0xffff;

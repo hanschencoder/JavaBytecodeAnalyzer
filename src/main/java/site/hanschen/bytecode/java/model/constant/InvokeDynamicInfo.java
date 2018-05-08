@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 /**
  * @author chenhang
  */
-public class InvokeDynamicInfo extends ConstantElement {
+public class InvokeDynamicInfo extends Constant {
 
     /**
      * 2 byte
@@ -35,12 +35,12 @@ public class InvokeDynamicInfo extends ConstantElement {
     }
 
     @Override
-    public String getComment(ConstantElement[] constantPool) {
+    public String getComment(Constant[] constantPool) {
         // TODO: show comment here
         return null;
     }
 
-    public static class Parser implements ConstantElementParser<InvokeDynamicInfo> {
+    public static class Parser implements ConstantParser<InvokeDynamicInfo> {
 
         @Override
         public boolean match(short tag) {

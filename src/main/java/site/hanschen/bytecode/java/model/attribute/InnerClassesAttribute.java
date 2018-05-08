@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.model.attribute;
 
-import site.hanschen.bytecode.java.model.constant.ConstantElement;
+import site.hanschen.bytecode.java.model.constant.Constant;
 
 import java.nio.ByteBuffer;
 
@@ -12,7 +12,7 @@ public class InnerClassesAttribute extends AttributeInfo {
     public int numberOfClasses;
     public Classes[] classes;
 
-    public InnerClassesAttribute(int attributeNameIndex, long attributeLength, ConstantElement[] constantPool) {
+    public InnerClassesAttribute(int attributeNameIndex, long attributeLength, Constant[] constantPool) {
         super(attributeNameIndex, attributeLength, constantPool);
     }
 
@@ -41,7 +41,7 @@ public class InnerClassesAttribute extends AttributeInfo {
         }
 
         @Override
-        public InnerClassesAttribute create(ByteBuffer buffer, ConstantElement[] constantPool) {
+        public InnerClassesAttribute create(ByteBuffer buffer, Constant[] constantPool) {
             int attributeNameIndex = buffer.getShort() & 0xffff;
             long attributeLength = buffer.getInt() & 0xffffffffL;
             int numberOfClasses = buffer.getShort() & 0xffff;
