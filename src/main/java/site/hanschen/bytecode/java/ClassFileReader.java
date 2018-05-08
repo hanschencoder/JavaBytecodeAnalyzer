@@ -97,10 +97,11 @@ public class ClassFileReader {
         for (int i = 1; i < constantPoolCount; i++) {
             ConstantElement element = constantPool[i];
             String comment = element.getComment(constantPool);
+            int width = String.valueOf(constantPoolCount).length() + 1;
             if (comment != null && comment.length() > 0) {
-                Logger.d("#%02d  =  %-20s %-10s // %s", i, element.getTag(), element.getValue(), comment);
+                Logger.d("%" + width + "s  =  %-20s %-10s // %s", ("#" + i), element.getTag(), element.getValue(), comment);
             } else {
-                Logger.d("#%02d  =  %-20s %s", i, element.getTag(), element.getValue());
+                Logger.d("%" + width + "s  =  %-20s %s", ("#" + i), element.getTag(), element.getValue());
             }
         }
 

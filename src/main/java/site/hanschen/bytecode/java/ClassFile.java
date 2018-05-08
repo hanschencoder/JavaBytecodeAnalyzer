@@ -1,7 +1,8 @@
 package site.hanschen.bytecode.java;
 
 
-import com.sun.tools.javac.util.Pair;
+
+import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
