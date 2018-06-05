@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author chenhang
@@ -30,7 +32,7 @@ public class ClassFileReader {
     private int methodsCount;
     private MethodInfo[] methodInfo;
     private int attributesCount;
-    private AttributeInfo[] attributeInfo;
+    private Map<String, AttributeInfo> attributeInfo = new HashMap<>();
 
     public ClassFileReader(File file) throws IOException {
         this(new FileInputStream(file));
@@ -100,10 +102,9 @@ public class ClassFileReader {
         // parse attributes count
         attributesCount = buffer.getShort() & 0xffff;
         if (attributesCount > 0) {
-            attributeInfo = new AttributeInfo[attributesCount];
             for (int i = 0; i < attributesCount; i++) {
                 AttributeInfo attribute = AttributeInfo.readFrom(buffer, constantPool.getConstantPool());
-                attributeInfo[i] = attribute;
+                attributeInfo.put(attribute.getAttributeName(), attribute);
             }
         }
     }
@@ -160,7 +161,15 @@ public class ClassFileReader {
         return attributesCount;
     }
 
-    public AttributeInfo[] getAttributeInfo() {
+    public Map<String, AttributeInfo> getAttributeInfo() {
         return attributeInfo;
+    }
+
+    public boolean isClass() {
+        return !isInterface();
+    }
+
+    public boolean isInterface() {
+        return (accessFlags & ClassAccess.ACC_INTERFACE.getFlag()) != 0;
     }
 }

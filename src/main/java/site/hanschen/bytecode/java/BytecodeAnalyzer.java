@@ -3,17 +3,20 @@ package site.hanschen.bytecode.java;
 import site.hanschen.bytecode.java.model.FieldInfo;
 import site.hanschen.bytecode.java.model.MethodInfo;
 import site.hanschen.bytecode.java.model.attribute.AttributeInfo;
+import site.hanschen.bytecode.java.model.attribute.SignatureAttribute;
 import site.hanschen.bytecode.java.model.constant.ClassInfo;
 import site.hanschen.bytecode.java.model.constant.Constant;
 import site.hanschen.bytecode.java.utils.Logger;
 import site.hanschen.bytecode.java.utils.Utils;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author chenhang
  */
-public class BytecodeAnalyzer {
+public class BytecodeAnalyzer implements Runnable {
 
     private String tag = "BytecodeAnalyzer";
 
@@ -27,11 +30,44 @@ public class BytecodeAnalyzer {
         }
     }
 
+
     private static void dump(ClassFileReader reader) {
-        Logger.d("bytecode version: %d.%d", reader.getMajor(), reader.getMinor());
+
 
         ConstantPool constantPool = reader.getConstantPool();
         int poolCount = reader.getConstantPool().getConstantPoolCount();
+
+        Logger.d("Compiled from \"" + reader.getAttributeInfo().get("SourceFile").getComment() + "\"");
+        Logger.d("Bytecode version: %d.%d", reader.getMajor(), reader.getMinor());
+
+        String modifiers = Utils.getClassAccessFlags(reader.getAccessFlags());
+        String type = reader.isClass() ? "class " : "interface ";
+        String className = reader.getConstantPool()
+                .get(reader.getThisClassIndex())
+                .getComment(reader.getConstantPool().getConstantPool())
+                .replace("/", ".");
+        String superClassName = "";
+        StringBuilder interfaces = new StringBuilder();
+
+        SignatureAttribute sigAttr = (SignatureAttribute) reader.getAttributeInfo().get("Signature");
+        if (sigAttr == null) {
+            // use info from class file header
+            if (reader.isClass() && reader.getSuperClass() != 0) {
+                ClassInfo classInfo = reader.getConstantPool().get(reader.getSuperClass());
+                superClassName = " extends " + classInfo.getComment(constantPool.getConstantPool()).replace("/", ".");
+            }
+            if (reader.getInterfaceCount() > 0) {
+                for (int i = 0; i < reader.getInterfaceCount(); i++) {
+                    int index = reader.getInterfaces()[i];
+                    interfaces.append(i == 0 ? (reader.isClass() ? " implements " : " extends ") : " ,");
+                    ClassInfo classInfo = constantPool.get(index);
+                    interfaces.append(classInfo.getComment(constantPool.getConstantPool()).replace("/", "."));
+                }
+            }
+        }
+        Logger.d("%s%s%s%s%s {", modifiers, type, className, superClassName, interfaces.toString());
+
+
         for (int i = 1; i < poolCount; i++) {
             Constant constant = constantPool.get(i);
             String comment = constant.getComment(constantPool.getConstantPool());
@@ -80,9 +116,14 @@ public class BytecodeAnalyzer {
 
         Logger.d("attributes count: %d", reader.getAttributesCount());
         if (reader.getAttributesCount() > 0) {
-            for (AttributeInfo attribute : reader.getAttributeInfo()) {
-                Logger.d(String.format("attribute:%s, value:%s", attribute.getAttributeName(), attribute.getComment()));
+            for (Map.Entry<String, AttributeInfo> entry : reader.getAttributeInfo().entrySet()) {
+                Logger.d(String.format("attribute:%s, value:%s", entry.getKey(), entry.getValue().getComment()));
             }
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 }

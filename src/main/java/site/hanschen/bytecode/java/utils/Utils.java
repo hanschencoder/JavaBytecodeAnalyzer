@@ -1,6 +1,6 @@
 package site.hanschen.bytecode.java.utils;
 
-import site.hanschen.bytecode.java.ClassFile;
+import site.hanschen.bytecode.java.ClassAccess;
 
 import java.io.InputStream;
 
@@ -34,7 +34,7 @@ public class Utils {
 
     public static String getClassAccessFlags(short accessFlags) {
         StringBuilder builder = new StringBuilder();
-        for (ClassFile.ClassAccess access : ClassFile.ClassAccess.values()) {
+        for (ClassAccess access : ClassAccess.values()) {
             if ((accessFlags & access.getFlag()) != 0) {
                 builder.append(access.name()).append(" ");
             }
